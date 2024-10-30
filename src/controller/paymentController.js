@@ -75,7 +75,8 @@ module.exports.confirmPayment = async (req, res) => {
       if (status == "success" && tx_ref) {
       if (customization.title == "good") {
           console.log("type is:" + customization.title);
-          const purchase = await Purchase.findOne({ tx_ref: tx_ref });
+        const purchase = await Purchase.findOne({ tx_ref: tx_ref });
+        console.log(purchase)
           purchase.status = "completed";
           const product = await Product.findById(last_name);
           if (!product) {
