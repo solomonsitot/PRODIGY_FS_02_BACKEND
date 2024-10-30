@@ -63,6 +63,7 @@ module.exports.chapaPayment = async (req, res, next) => {
 
 module.exports.confirmPayment = async (req, res) => {
   try {
+    console.log('get there')
     const hash = crypto
       .createHmac("sha256", process.env.SECRET_KEY)
       .update(JSON.stringify(req.body))
