@@ -24,7 +24,7 @@ module.exports.chapaPayment = async (req, res, next) => {
       tx_ref: tx_ref,
       currency: "ETB",
       callback_url:
-        "https://prodigy-fs-02-backend.onrender.com/confirm-payment",
+        "https://prodigy-fs-02-backend.onrender.com/purchase/confirm-payment",
       return_url: "http://localhost:5173/thanks",
       "subaccounts[id]": sub_id,
     };
@@ -63,7 +63,7 @@ module.exports.chapaPayment = async (req, res, next) => {
 
 module.exports.confirmPayment = async (req, res) => {
   try {
-    console.log('get there')
+    console.log("get there");
     const hash = crypto
       .createHmac("sha256", process.env.SECRET_KEY)
       .update(JSON.stringify(req.body))
@@ -74,7 +74,7 @@ module.exports.confirmPayment = async (req, res) => {
       const { tx_ref, status, last_name, customization } = event;
 
       if (status == "success" && tx_ref) {
-      if (customization.title == "good") {
+        if (customization.title == "good") {
           console.log("type is:" + customization.title);
           const purchase = await Purchase.findOne({ tx_ref: tx_ref });
           purchase.status = "completed";
