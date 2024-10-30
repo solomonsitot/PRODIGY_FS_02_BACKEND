@@ -24,7 +24,7 @@ module.exports.chapaPayment = async (req, res, next) => {
       tx_ref: tx_ref,
       currency: "ETB",
       callback_url:
-        "https://web-tourism-management-backend-final.onrender.com/reservation/confirm-payment",
+        "https://prodigy-fs-02-backend.onrender.com/reservation/confirm-payment",
       return_url: "http://localhost:5173/thanks",
       "subaccounts[id]": sub_id,
     };
