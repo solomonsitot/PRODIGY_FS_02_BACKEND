@@ -73,10 +73,35 @@ module.exports.confirmPayment = async (req, res) => {
       const { tx_ref, status, last_name, customization } = event;
 
       if (status == "success" && tx_ref) {
-      if (customization.title == "good") {
+        if (customization.title == "room") {
           console.log("type is:" + customization.title);
-        const purchase = await Purchase.findOne({ tx_ref: tx_ref });
-        console.log(purchase)
+          const reservation = await Reservations.findOne({ tx_ref: tx_ref });
+          reservation.status = "completed";
+          const room = await Rooms.findById(last_name);
+          if (!room) {
+            return res.send("room not found");
+          }
+          const quantity = reservation.quantity;
+          room.room_available -= quantity;
+          await room.save();
+          await reservation.save();
+          return res.send("everything done");
+        } else if (customization.title == "tour") {
+          console.log("type is:" + customization.title);
+          const subscription = await Subscriptions.findOne({ tx_ref: tx_ref });
+          subscription.status = "completed";
+          const tour = await Tours.findById(last_name);
+          if (!tour) {
+            return res.send("tour not found");
+          }
+          const quantity = subscription.quantity;
+          tour.space_left -= quantity;
+          await tour.save();
+          await subscription.save();
+          return res.send("everything done");
+        } else if (customization.title == "good") {
+          console.log("type is:" + customization.title);
+          const purchase = await Purchase.findOne({ tx_ref: tx_ref });
           purchase.status = "completed";
           const product = await Product.findById(last_name);
           if (!product) {
